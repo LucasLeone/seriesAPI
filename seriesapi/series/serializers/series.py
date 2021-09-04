@@ -7,29 +7,6 @@ from rest_framework import serializers
 from seriesapi.series.models import Serie, Season, Episode
 
 
-class SerieModelSerializer(serializers.ModelSerializer):
-    """Serie model serializer."""
-
-    seasons = serializers.StringRelatedField(many=True)
-
-    class Meta:
-        """Meta class."""
-
-        model = Serie
-        fields = '__all__'
-
-
-class SeasonModelSerializer(serializers.ModelSerializer):
-    """Season model serializer."""
-
-    episodes = serializers.StringRelatedField(many=True)
-
-    class Meta:
-        """Meta class."""
-
-        model = Season
-        fields = '__all__'
-
 
 class EpisodeModelSerializer(serializers.ModelSerializer):
     """Episode model serializer."""
@@ -38,4 +15,30 @@ class EpisodeModelSerializer(serializers.ModelSerializer):
         """Meta class."""
 
         model = Episode
-        fields = '__all__'
+        fields = ('title', )
+
+
+class SeasonModelSerializer(serializers.ModelSerializer):
+    """Season model serializer."""
+
+    episodes = EpisodeModelSerializer(many=True)
+
+    class Meta:
+        """Meta class."""
+
+        model = Season
+        fields = ('title', 'episodes')
+
+
+class SerieModelSerializer(serializers.ModelSerializer):
+    """Serie model serializer."""
+
+    seasons = SeasonModelSerializer(many=True)
+
+    class Meta:
+        """Meta class."""
+
+        model = Serie
+        fields = ('title', 'description', 'seasons')
+
+

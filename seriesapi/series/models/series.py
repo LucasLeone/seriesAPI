@@ -12,7 +12,7 @@ class Serie(SeriesAPIModel):
     """Serie model."""
 
     title = models.CharField('Series title', max_length=250)
-    release = models.DateField('Release date', default=timezone.now())
+    release = models.DateField('Release date', default=timezone.now)
     description = models.TextField('Series description', blank=True, null=True)
     image = models.ImageField('Series image', upload_to='series/images/')
 
@@ -26,7 +26,7 @@ class Season(SeriesAPIModel):
 
     title = models.CharField('Season title', max_length=250)
 
-    serie = models.ForeignKey(Serie, on_delete=models.CASCADE)
+    serie = models.ForeignKey(Serie, on_delete=models.CASCADE, related_name='seasons')
 
     def __str__(self):
         """Return season title and serie."""
@@ -41,7 +41,7 @@ class Episode(SeriesAPIModel):
     video = models.URLField()
     image = models.ImageField('Episode image', upload_to='episodes/images/')
 
-    season = models.ForeignKey(Season, on_delete=models.CASCADE)
+    season = models.ForeignKey(Season, on_delete=models.CASCADE, related_name='episodes')
 
     def __str__(self):
         """Return episode title, season title and serie."""
